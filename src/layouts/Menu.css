@@ -1,0 +1,183 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.menu{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.element{
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-gap: 10px;
+
+    
+}
+
+.serchButton{
+    width: 50px;
+    height: 50px;
+    margin-left: 12px;
+
+    background-color: #FF5555;
+    border-radius: 6px;
+}
+
+.item{
+    
+}
+
+.gitRepoTitle{
+    display: flex;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+
+.gitRepoTitle:hover{
+    box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25);
+}
+
+.avatar{
+    margin: 12px;
+    width: 80px;
+    height: 80px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.info{
+    display: flex;
+}
+
+.starts{
+    display: flex;
+
+    margin-right: 20px;
+}
+
+.startsInfo{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #7E7E7E;
+
+    margin-left: 4.52px;
+}
+
+.repoName{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+
+    margin-bottom: 4px;;
+}
+
+.orgName{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #7E7E7E;
+
+    margin-bottom: 4px;
+}
+
+.orgName:hover{
+    color: #208FBF;
+}
+
+.dtUpdated{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #7E7E7E;
+}
+
+.serchButton:hover{
+    background-color: #FD8686;
+
+}
+
+.svgSerchButton{
+    margin: auto;
+    vertical-align: middle;
+}
+
+input{
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    box-sizing: border-box;
+    border-radius: 6px;
+    
+    
+    /* padding-top: 17px;
+    padding-bottom: 17px;*/
+    padding-left: 12px; 
+
+    font-family: Roboto;
+    font-size: 14px;
+}
+
+input:focus{
+    border: 1px solid #FF5555;
+}
+
+input:disabled{
+    background: #F9F9F9;
+}
+
+input::placeholder{
+    /* height: 100%;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    padding-left: 12px;
+    line-height: 50px;
+
+    font-family: Roboto;
+    font-size: 14px; */
+}
+
+/* button, button svg {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    }
+
+button {
+    position: relative;
+    border: none;
+    }
+
+button svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+} */
+
+body{
+    width: 397px;
+}
