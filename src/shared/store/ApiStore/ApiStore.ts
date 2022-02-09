@@ -26,7 +26,7 @@ export default class ApiStore implements IApiStore {
           try {
               let urlForRequest: string;
               if (params.method === HTTPMethod.GET && params.data) {
-                  const resolveAddress: string = "?" + qs.stringify(params.data);
+                  const resolveAddress: string = `?${qs.stringify(params.data)}`;
                   urlForRequest = this.baseUrl + params.endpoint + resolveAddress;
                 } else {
                     urlForRequest = this.baseUrl + params.endpoint;

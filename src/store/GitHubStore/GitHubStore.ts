@@ -14,7 +14,7 @@ export default class GitHubStore implements IGitHubStore {
           };
           const test = await this.apiStore.request(requestParams);
 
-          const result = test.data.map(function parse(elem: any) {
+          const result = test.data.map((elem: any) => {
             return {
               id: elem.id,
               name: elem.name,

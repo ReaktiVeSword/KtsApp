@@ -1,8 +1,3 @@
-*{
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-}
-
 :root {
     --main-b-color: #FFFFFF;
     --button-bg-color: #FF5555;
@@ -13,100 +8,109 @@
     --button-hover-color: #FD8686;
     --input-focus-color: #FF5555;
     --disabled-b-color: #F9F9F9;
+
+    --button-margin-left: 12px;
+    --card_raiting_margin-right: 20px;
+    --card_raiting_counter_margin-left: 4px;
+    --card_content_text_margin-bottom: 4px;
+    --searchbar_input_padding-left: 12px;
+    --body_padding: 0 20px;
   }
+
+*{
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    width: 397px;
+    padding: var(--body_padding);
+}
+
 
 .menu{
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 10px;
-
-    margin-left: 20px;
-    margin-right: 20px;
 }
 
-.element{
+.searchbar{
     display: grid;
     grid-template-columns: 80% 20%;
     grid-gap: 10px;
-
-    
 }
 
-.serchButton{
+.searchbar__button{
     width: 50px;
     height: 50px;
-    margin-left: 12px;
+    margin-left: var(--button-margin-left);
 
     background-color: var(--button-bg-color);
     border-radius: 6px;
 }
 
-.gitRepoTitle{
+.card{
     display: flex;
 
     background: var(--main-b-color);
     border: 1px solid var(--box-border-color);
-    box-sizing: border-box;
     border-radius: 6px;
 }
 
-.gitRepoTitle:hover{
+.card:hover{
     box-shadow: 0px 2px 6px var(--box-shadow-color);
 }
 
-.avatar{
+.card__avatar{
     margin: 12px;
     width: 80px;
     height: 80px;
 }
 
-.content{
+.card__content{
     display: flex;
     flex-direction: column;
 
     justify-content: center;
 }
 
-.info{
+.card__content__info{
     display: flex;
 }
 
-.starts{
+.card__raiting{
     display: flex;
 
-    margin-right: 20px;
+    margin-right: var(--card_raiting_margin-right);
 }
 
-.startsInfo{
-    font-family: Roboto;
+.card__raiting__counter{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 16px;
     color: var(--text-mouse-color);
 
-    margin-left: 4.52px;
+    margin-left: var(--card_raiting_counter_margin-left);
 }
 
-.repoName{
-    font-family: Roboto;
+.card__content__repo-name{
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
 
-    margin-bottom: 4px;;
+    margin-bottom: var(--card_content_text_margin-bottom);
 }
 
-.orgName{
-    font-family: Roboto;
+.card__content__org-name{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 16px;
     color: var(--text-mouse-color);
 
-    margin-bottom: 4px;
+    margin-bottom: var(--card_content_text_margin-bottom);
 
     overflow: hidden;
     width: 240px;
@@ -114,12 +118,11 @@
     white-space: nowrap;
 }
 
-.orgName:hover{
+.card__content__org-name:hover{
     color: var(--text-hover-color);
 }
 
-.dtUpdated{
-    font-family: Roboto;
+.date-updated{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -127,38 +130,32 @@
     color: var(--text-mouse-color);
 }
 
-.serchButton:hover{
+.searchbar__button:hover{
     background-color: var(--button-hover-color);
-
 }
 
-.svgSerchButton{
+.searchbar__button__svg{
     margin: auto;
     vertical-align: middle;
 }
 
-input{
+.searchbar__input input{
     width: 100%;
     height: 100%;
     background: var(--main-b-color);
     border: 1px solid var(--box-border-color);
-    box-sizing: border-box;
     border-radius: 6px;
     
-    padding-left: 12px; 
+    padding-left: var(--searchbar_input_padding-left); 
 
-    font-family: Roboto;
     font-size: 14px;
 }
 
-input:focus{
+.searchbar__input input:focus{
     border: 1px solid var(--input-focus-color);
+    outline: none;
 }
 
-input:disabled{
+.searchbar__input input:disabled{
     background: var(--disabled-b-color);
-}
-
-body{
-    width: 397px;
 }
