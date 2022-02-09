@@ -10,7 +10,7 @@ export default class GitHubStore implements IGitHubStore {
             method: HTTPMethod.GET,
             endpoint: "/orgs/" + params.organizationName + "/repos",
             headers: { "Content-Type": "application/json; charset=utf-8" },
-            data: null,
+            data: {},
           };
           
           const test = await this.apiStore.request(requestParams);
