@@ -12,8 +12,8 @@ export default class GitHubStore implements IGitHubStore {
             headers: { "Content-Type": "application/json; charset=utf-8" },
             data: null,
           };
+          
           const test = await this.apiStore.request(requestParams);
-
           const result = test.data.map((elem: any) => {
             return {
               id: elem.id,

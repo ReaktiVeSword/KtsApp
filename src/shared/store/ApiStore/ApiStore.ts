@@ -1,51 +1,64 @@
-import qs from "qs";
+import qs from 'qs';
 
 import {
-  ApiResponse,
-  IApiStore,
-  RequestParams,
-  StatusHTTP,
-  HTTPMethod,
-} from "./types";
+    ApiResponse,
+    HTTPMethod,
+    IApiStore,
+    RequestParams,
+    StatusHTTP
+} from './types';
 
 export default class ApiStore implements IApiStore {
-
     readonly baseUrl: string;
 
     constructor(baseUrl: string) {
         this.baseUrl = baseUrl;
     }
-    
-    getconsole(str: string): string {
-        throw new Error("Method not implemented.");
+
+    private getRequestData<ReqT>(
+        params: RequestParams<ReqT>
+    ): [string, RequestInit] {
+        let endPoint = `${this.baseUrl}${params.endpoint}`;
+        const req: RequestInit = {
+            method: params.method,
+            headers: { ...params.headers }
+        };
+        
+        if (params.method === HTTPMethod.GET) {
+            if (params.data && Object.keys(params.data).length !== 0) {
+                endPoint = `${endPoint}?${qs.stringify(params.data)}`;
+            } else {
+                endPoint = `${endPoint}`;
+            }
+        } else if (params.method === HTTPMethod.POST) {
+            req.body = JSON.stringify(params.data);
+            req.headers = {
+                ...params.headers,
+                'Content-Type': 'application/json;charset=UTF-8'
+            };
+        }
+        
+        return [endPoint, req];
     }
 
-    request<SuccessT, ErrorT = any, ReqT = {}>(
+    async request<SuccessT, ErrorT = any, ReqT = {}>(
         params: RequestParams<ReqT>
-      ): Promise<ApiResponse<SuccessT, ErrorT>> {
-          try {
-              let urlForRequest: string;
-              if (params.method === HTTPMethod.GET && params.data) {
-                  const resolveAddress: string = `?${qs.stringify(params.data)}`;
-                  urlForRequest = this.baseUrl + params.endpoint + resolveAddress;
-                } else {
-                    urlForRequest = this.baseUrl + params.endpoint;
-                }
-                return fetch(urlForRequest, {
-                    method: params.method,
-                    headers: params.headers,
-                })
-                .then((response) => {
-                    const data = response.json();
-                    return data;
-                })
-                .then((data) => {
-                    return { success: true, data: data, status: StatusHTTP.OK };
-                });
-            } catch (e) {
-                return new Promise(() => {
-                    return { success: false, data: null, status: StatusHTTP.BadRequest };
-                });
-            }
+    ): Promise<ApiResponse<SuccessT, ErrorT>> {
+        try {
+            const response = await fetch(...this.getRequestData(params));
+            
+            return {
+                success: response.ok,
+                data: await response.json(),
+                status: response.status
+            };
+        } catch (e: any) {
+            console.error(e);
+            return {
+                success: false,
+                data: e,
+                status: StatusHTTP.BadRequest
+            };
         }
     }
+}
