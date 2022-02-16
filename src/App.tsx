@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import logo from './logo.svg';
 import './App.css';
 import GitHubStore from './store/GitHubStore/GitHubStore';
@@ -19,23 +19,23 @@ function App() {
         >
           Learn React
         </a>
-        <button onClick={()=> {
-        
-        
+        <button onClick={() => {
 
-const gitHubStore = new GitHubStore();
 
-const EXAMPLE_ORGANIZATION = 'ktsstudio';
 
-gitHubStore.getOrganizationReposList({
-  organizationName: EXAMPLE_ORGANIZATION
-}).then(result => {
-  console.log(result); // в консоли появится список репозиториев в ktsstudio
-})
-        
-      }} >click me</button>
+          const gitHubStore = new GitHubStore();
+
+          const EXAMPLE_ORGANIZATION = 'ktsstudio';
+
+          gitHubStore.getOrganizationReposList({
+            organizationName: EXAMPLE_ORGANIZATION
+          }).then(result => {
+            console.log(result); // в консоли появится список репозиториев в ktsstudio
+          })
+
+        }} >click me</button>
       </header>
-      
+
     </div>
   );
 }
