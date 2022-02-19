@@ -1,0 +1,19 @@
+.button {
+    padding: 16px;
+    border-radius: 6px;
+    border: 0;
+    background: var(--button_primary_background);
+
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.button:hover:enabled {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.button:disabled {
+    background: var(--button_disabled_background);
+}

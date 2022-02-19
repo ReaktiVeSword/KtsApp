@@ -1,0 +1,79 @@
+.repo-tile {
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    height: 104px;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+
+    border: 1px solid var(--primary_border);
+    box-sizing: border-box;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+.repo-tile:hover {
+    box-shadow: 0 2px 6px var(--repo-tile_hover_shadow);
+}
+
+.repo-tile__title {
+    font-weight: bold;
+    font-size: 16px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.repo-tile__org-link {
+    font-size: 14px;
+    color: var(--primary_color);
+}
+
+.repo-tile__org-link {
+    color: var(--primary_color);
+    text-decoration: none;
+}
+
+.repo-tile__org-link:hover {
+    color: var(--link_active_color);
+}
+
+.repo-tile__content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.repo-tile__content > * {
+    margin-bottom: 4px;
+}
+
+.repo-tile__avatar {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.repo-tile__additional-info {
+    font-size: 14px;
+    color: var(--primary_color);
+    margin-bottom: 0;
+}
+
+.repo-tile__additional-info {
+    display: inline-block;
+}
+
+.repo-tile__additional-info > * {
+    vertical-align: middle;
+}
+
+.repo-tile__icon-raiting {
+    margin-left: 0;
+    margin-right: 4px;
+}
+
+.repo-tile__date-info {
+    margin-left: 20px;
+}

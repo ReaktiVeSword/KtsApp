@@ -1,0 +1,16 @@
+.input {
+    background: var(--main_background);
+    border: 1px solid var(--primary_border);
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 17px 12px;
+    color: var(--primary_color);
+}
+
+.input:focus {
+    border: 1px solid var(--active_border);
+}
+
+.input:disabled {
+    background: var(--input_disabled_background);
+}
