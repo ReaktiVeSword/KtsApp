@@ -1,7 +1,10 @@
 .repos-list {
-    padding: 20px;
-    width: 100%; /*397px;*/
-    box-sizing: border-box;
+    width: 397px;
+    padding: var(--body_padding);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
 }
 
 .repos-list__search {

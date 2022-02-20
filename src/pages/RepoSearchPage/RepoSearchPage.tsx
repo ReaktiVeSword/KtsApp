@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import "./RepoSearchPage.css";
 
-import Button from "@components/Button";
-import Input from "@components/Input";
 import RepoTile from "@components/RepoTile/Index";
-import SearchIcon from "@components/SearchIcon";
+import Searchbar from "@components/Searchbar";
 import { ApiResponse } from "@shared/store/ApiStore/types";
 import GitHubStore from "@store/GitHubStore";
 import { RepoItem } from "@store/GitHubStore/types";
@@ -63,16 +62,11 @@ const RepoSearchPage: React.FC = () => {
 
   return (
     <div className={"repos-list"}>
-      <div className={"repos-list__search"}>
-        <Input
-          value={inputValue}
-          placeholder="Введите название организации"
-          onChange={searchOnChange}
-        />
-        <Button onClick={searchRepo}>
-          <SearchIcon />
-        </Button>
-      </div>
+      <Searchbar
+        inputValue={inputValue}
+        searchOnChange={searchOnChange}
+        searchRepo={searchRepo}
+      />
       <div className={"repos-list__repos"}>{repoTiles()}</div>
       <RepoBranchesDrawer
         selectedRepo={selectedRepo}

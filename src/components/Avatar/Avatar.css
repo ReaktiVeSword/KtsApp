@@ -3,10 +3,12 @@
     height: 80px;
     font-size: 40px;
     text-align: center;
-    color: #FFFFFF;
-    background-color: #FF5555;
+    color: var(--main-b-color);
+    background-color: var(--button-bg-color);
     border-radius: 100%;
     overflow: hidden;
+
+    margin: 12px;
 }
 
 .avatar__img {
