@@ -1,3 +1,5 @@
+import { urls } from "@utils/utils";
+
 import ApiStore from "../../shared/store/ApiStore/ApiStore";
 import { ApiResponse, HTTPMethod } from "../../shared/store/ApiStore/types";
 import {
@@ -15,9 +17,12 @@ export default class GitHubStore implements IGitHubStore {
   ): Promise<ApiResponse<RepoItem[], any>> {
     return await this.apiStore.request({
       method: HTTPMethod.GET,
-      data: {},
+      data: {
+        per_page: params.perPage,
+        page: params.page,
+      },
       headers: {},
-      endpoint: `/orgs/${params.organizationName}/repos`,
+      endpoint: urls.api.orgRepos(params.organizationName),
     });
   }
 
@@ -28,7 +33,7 @@ export default class GitHubStore implements IGitHubStore {
       method: HTTPMethod.GET,
       data: {},
       headers: {},
-      endpoint: `/repos/${params.ownerName}/${params.repoName}/branches`,
+      endpoint: urls.api.repoBranches(params.ownerName, params.repoName),
     });
   }
 }

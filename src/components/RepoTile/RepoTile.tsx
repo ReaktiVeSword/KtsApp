@@ -5,7 +5,7 @@ import StarIcon from "@components/StarIcon";
 import { dateFormat } from "@utils/utils";
 import { RepoItem } from "src/store/GitHubStore/types";
 
-import "./RepoTile.css";
+import styles from "./RepoTile.module.scss";
 
 export type RepoTileProps = {
   repoItem: RepoItem;
@@ -22,21 +22,23 @@ const RepoTile: React.FC<RepoTileProps> = ({
   onClick,
 }): JSX.Element => {
   return (
-    <div className={"repo-tile"} onClick={onClick}>
-      <div className="repo-tile__avatar">
+    <div className={`${styles.repoTile}`} onClick={onClick}>
+      <div className={`${styles.repoTile__avatar}`}>
         <Avatar src={avatar_url} letter={login.slice(1)} />
       </div>
-      <div className="repo-tile__content">
-        <div className="repo-tile__title"> {name} </div>
-        <a className="repo-tile__org-link" href={html_url}>
+      <div className={`${styles.repoTile__content}`}>
+        <div className={`${styles.repoTile__title}`}>{name}</div>
+        <a className={`${styles.repoTile__orgLink}`} href={html_url}>
           {login}
         </a>
-        <div className="repo-tile__additional-info">
-          <span className="repo-tile__icon-raiting">
+        <div className={`${styles.repoTile__additionalInfo}`}>
+          <span className={`${styles.repoTile__iconRaiting}`}>
             <StarIcon />
           </span>
-          <span className="repo-tile__raiting-info">{stargazers_count}</span>
-          <span className="repo-tile__date-info">
+          <span className={`${styles.repoTile__raitingInfo}`}>
+            {stargazers_count}
+          </span>
+          <span className={`${styles.repoTile__dateInfo}`}>
             {`Updated ${dateFormat(updated_at)}`}
           </span>
         </div>

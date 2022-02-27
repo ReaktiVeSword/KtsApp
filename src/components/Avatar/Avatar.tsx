@@ -1,5 +1,6 @@
 import React from "react";
-import "./Avatar.css";
+
+import styles from "./Avatar.module.scss";
 
 export type AvatarProps = {
   src?: string;
@@ -9,8 +10,12 @@ export type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({ src, alt, letter }): JSX.Element => {
   return (
-    <div className="avatar">
-      {src ? <img src={src} alt={alt} className="avatar__img" /> : letter}
+    <div className={`${styles.avatar}`}>
+      {src ? (
+        <img src={src} alt={alt} className={`${styles.avatar__img}`} />
+      ) : (
+        letter
+      )}
     </div>
   );
 };

@@ -13,6 +13,8 @@ export interface IGitHubStore {
 // Параметры запроса
 export type GetOrganizationReposListParams = {
   organizationName: string;
+  page: number;
+  perPage: number;
 };
 
 export type GetReposBranchesListParams = {

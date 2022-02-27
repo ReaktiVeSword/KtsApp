@@ -5,6 +5,8 @@ import Button from "@components/Button";
 import Input from "@components/Input";
 import SearchIcon from "@components/SearchIcon";
 
+import styles from "./Searchbar.module.scss";
+
 export type SearchbarProps = {
   inputValue: string;
   searchOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,8 +19,8 @@ const Searchbar: React.FC<SearchbarProps> = ({
   searchRepo,
 }): JSX.Element => {
   return (
-    <div className="searchbar">
-      <div className="searchbar__input">
+    <div className={`${styles.Searchbar}`}>
+      <div>
         <Input
           value={inputValue}
           placeholder="Введите название организации"
