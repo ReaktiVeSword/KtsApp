@@ -19,8 +19,7 @@ const RepoSearchPage: React.FC = () => {
   const [selectedRepo, setSelectedRepo] = useState<RepoItem | null>(null);
 
   const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setInputValue(value);
+    setInputValue(e.target.value);
   };
 
   const searchRepo = () => {
