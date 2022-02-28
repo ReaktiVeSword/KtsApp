@@ -9,8 +9,8 @@ export type SearchButtonProps = {
 const Button: React.FC<React.PropsWithChildren<SearchButtonProps>> = ({
   onClick,
   children,
-  disabled,
-}): JSX.Element => {
+  disabled = false,
+}) => {
   return (
     <button className={"button"} onClick={onClick} disabled={disabled}>
       {children}

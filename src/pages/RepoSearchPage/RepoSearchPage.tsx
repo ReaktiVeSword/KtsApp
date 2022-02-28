@@ -24,41 +24,43 @@ const RepoSearchPage: React.FC = () => {
   };
 
   const searchRepo = () => {
-    if (inputValue !== "") {
-      setIsLoading(true);
-      gitHubStore
-        .getOrganizationReposList({
-          organizationName: inputValue,
-        })
-        .then((result: ApiResponse<RepoItem[], any>) => {
-          setReposList(result.data);
-          setIsLoading(false);
-        });
+    try {
+      if (inputValue !== "") {
+        setIsLoading(true);
+        gitHubStore
+          .getOrganizationReposList({
+            organizationName: inputValue,
+          })
+          .then((result: ApiResponse<RepoItem[], any>) => {
+            setReposList(result.data);
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
     }
   };
 
-  const onClickRepo =
-    (repo: RepoItem): (() => void) =>
-    (): void => {
-      setSelectedRepo(repo);
-    };
+  const onClickRepo = (repo: RepoItem) => setSelectedRepo(repo);
 
   const onClose = () => {
     setSelectedRepo(null);
   };
 
-  const repoTiles = () => {
-    if (isLoading) {
-      return <div>Ищем репозитории</div>;
-    } else if (reposList.length) {
-      return reposList.map((repo: RepoItem): JSX.Element => {
-        return (
-          <RepoTile key={repo.id} repoItem={repo} onClick={onClickRepo(repo)} />
-        );
-      });
-    }
-    return null;
-  };
+  const repoTiles = isLoading ? (
+    <div>Ищем репозитории</div>
+  ) : (
+    reposList.map((repo: RepoItem): JSX.Element => {
+      return (
+        <RepoTile
+          key={repo.id}
+          repoItem={repo}
+          onClick={() => onClickRepo(repo)}
+        />
+      );
+    })
+  );
 
   return (
     <div className={"repos-list"}>
@@ -67,12 +69,8 @@ const RepoSearchPage: React.FC = () => {
         searchOnChange={searchOnChange}
         searchRepo={searchRepo}
       />
-      <div className={"repos-list__repos"}>{repoTiles()}</div>
-      <RepoBranchesDrawer
-        selectedRepo={selectedRepo}
-        onClose={onClose}
-        gitHubStore={gitHubStore}
-      />
+      <div className={"repos-list__repos"}>{repoTiles}</div>
+      <RepoBranchesDrawer selectedRepo={selectedRepo} onClose={onClose} />
     </div>
   );
 };

@@ -22,7 +22,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
   onClick,
 }): JSX.Element => {
   return (
-    <div className={"repo-tile"} onClick={onClick}>
+    <div className="repo-tile" onClick={onClick}>
       <div className="repo-tile__avatar">
         <Avatar src={avatar_url} letter={login.slice(1)} />
       </div>
@@ -33,7 +33,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
         </a>
         <div className="repo-tile__additional-info">
           <span className="repo-tile__icon-raiting">
-            <StarIcon />
+            <StarIcon currentColor="#FF9432" />
           </span>
           <span className="repo-tile__raiting-info">{stargazers_count}</span>
           <span className="repo-tile__date-info">

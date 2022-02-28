@@ -9,24 +9,26 @@ export type SearchbarProps = {
   inputValue: string;
   searchOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   searchRepo?: (e: React.MouseEvent) => void;
+  disabled?: boolean;
 };
 
 const Searchbar: React.FC<SearchbarProps> = ({
   inputValue,
   searchOnChange,
   searchRepo,
+  disabled,
 }): JSX.Element => {
   return (
     <div className="searchbar">
-      <div className="searchbar__input">
+      <div>
         <Input
           value={inputValue}
           placeholder="Введите название организации"
           onChange={searchOnChange}
         />
       </div>
-      <Button onClick={searchRepo}>
-        <SearchIcon />
+      <Button onClick={searchRepo} disabled={disabled}>
+        <SearchIcon currentColor="white" />
       </Button>
     </div>
   );

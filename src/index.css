@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   border: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -38,7 +39,7 @@ code {
   --body_padding: 8px;
 }
 
-*:focus {
+input:focus {
   outline: none;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
