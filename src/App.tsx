@@ -1,43 +1,7 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import GitHubStore from './store/GitHubStore/GitHubStore';
+import RepoSearchPage from "./pages/RepoSearchPage";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={()=> {
-        
-        
-
-const gitHubStore = new GitHubStore();
-
-const EXAMPLE_ORGANIZATION = 'ktsstudio';
-
-gitHubStore.getOrganizationReposList({
-  organizationName: EXAMPLE_ORGANIZATION
-}).then(result => {
-  console.log(result); // в консоли появится список репозиториев в ktsstudio
-})
-        
-      }} >click me</button>
-      </header>
-      
-    </div>
-  );
+  return <RepoSearchPage />;
 }
 
 export default App;

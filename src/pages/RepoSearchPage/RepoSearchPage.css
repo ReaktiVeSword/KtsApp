@@ -1,0 +1,25 @@
+.repos-list {
+    width: 397px;
+    padding: var(--body_padding);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+}
+
+.repos-list__search {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 12px;
+    justify-items: stretch;
+    margin-bottom: 20px;
+}
+
+.repos-list__repos {
+    display: grid;
+    row-gap: 12px;
+    grid-template-columns: 100%;
+    justify-items: stretch;
+    max-height: 800px;
+    overflow: scroll;
+}
