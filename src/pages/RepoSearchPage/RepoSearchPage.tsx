@@ -30,8 +30,7 @@ const RepoSearchPage: React.FC = () => {
   const { isLoading, reposList, loadRepos } = useReposContext(StoreContext);
 
   const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setInputValue(value);
+    setInputValue(e.target.value);
   };
 
   const searchRepo = async () => {

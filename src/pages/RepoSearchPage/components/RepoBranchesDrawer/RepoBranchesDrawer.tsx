@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "antd/dist/antd.css";
+import GitHubStore from "@store/GitHubStore";
 import { Drawer } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { BranchItem, RepoItem } from "src/store/GitHubStore/types";
@@ -49,7 +50,7 @@ const RepoBranchesDrawer: React.FC = () => {
       {isLoading ? (
         <div>Загружаем ветки</div>
       ) : (
-        branchList?.map(
+        branchList.map(
           (branch: BranchItem): JSX.Element => (
             <div
               className={`${styles.repoBranchesDrawer__item}`}
@@ -64,4 +65,4 @@ const RepoBranchesDrawer: React.FC = () => {
   );
 };
 
-export default RepoBranchesDrawer;
+export default React.memo(RepoBranchesDrawer);
