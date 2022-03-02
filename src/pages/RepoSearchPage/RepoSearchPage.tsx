@@ -81,7 +81,7 @@ const RepoSearchPage: React.FC = () => {
             onChange={searchOnChange}
           />
           <Button onClick={searchRepo}>
-            <SearchIcon />
+            <SearchIcon currentColor="white" />
           </Button>
         </div>
         <div className={`${styles.reposList__repos}`}>

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import "antd/dist/antd.css";
-import GitHubStore from "@store/GitHubStore";
 import { Drawer } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { BranchItem, RepoItem } from "src/store/GitHubStore/types";
@@ -65,4 +64,4 @@ const RepoBranchesDrawer: React.FC = () => {
   );
 };
 
-export default React.memo(RepoBranchesDrawer);
+export default memo(RepoBranchesDrawer);
