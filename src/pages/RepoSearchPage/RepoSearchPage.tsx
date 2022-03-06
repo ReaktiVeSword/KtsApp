@@ -1,104 +1,108 @@
-import { memo, useEffect, useState } from "react";
-
-import Button from "@components/Button";
-import Input from "@components/Input";
-import RepoTile from "@components/RepoTile/Index";
-import SearchIcon from "@components/SearchIcon";
-import GitHubStore from "@store/GitHubStore";
-import { RepoItem } from "@store/GitHubStore/types";
-import useReposContext from "@store/hooks/useReposContext";
-import { urls } from "@utils/utils";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-
-import { StoreContext } from "../../App";
-import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
-import styles from "./RepoSearchPage.module.scss";
-
-const gitHubStore = new GitHubStore();
+import RepoTile from '@components/RepoTile/RepoTile';
+import SearchIcon from '@components/SearchIcon';
+import RootStore from '@shared/store/RootStore';
+import useReposContext from '@store/hooks/useReposContext';
+import { GithubRepoItemModel } from '@store/models/github/githubRepoItem';
+import { Meta } from '@utils/meta';
+import { urls } from '@utils/utils';
+import { Input, Button, Switch } from 'antd';
+import { observer } from 'mobx-react-lite';
+import qs from 'qs';
+import { useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { StoreContext } from 'src/App';
+import RepoBranchesDrawer from './components/RepoBranchesDrawer';
+import styles from './RepoSearchPage.module.scss';
 
 const RepoSearchPage: React.FC = () => {
-  type OwnerParams = {
-    owner: string;
-  };
-
+  const store = useReposContext(StoreContext);
   const navigate = useNavigate();
-  const [inputValue, setInputValue] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const { owner } = useParams<keyof OwnerParams>() as OwnerParams;
+  const location = useLocation();
+  const parsed = qs.parse(location.search, { ignoreQueryPrefix: true });
 
-  const { isLoading, reposList, loadRepos } = useReposContext(StoreContext);
+  useEffect(() => {
+    queryParse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const searchRepo = async () => {
-    if (inputValue !== "") {
-      setPage(1);
-      //await loadRepos(inputValue, 1);
-      navigate(`/repos/${inputValue}`);
+  const queryParse = () => {
+    if (parsed && parsed.search) {
+      RootStore.query.setParam('search', parsed?.search.toString());
+      store?.setInputValue(parsed?.search.toString());
     }
   };
 
   const onClickRepo =
-    (repo: RepoItem): (() => void) =>
-    (): void => {
-      navigate(urls.router.openRepo(repo.owner.login, repo.name));
-    };
+    (repo: GithubRepoItemModel): (() => void) =>
+      (): void => {
+        navigate(urls.router.openRepo(repo.owner.login, repo.name));
+      };
 
   const repoTiles = () => {
-    if (isLoading) {
+    if (store?.meta === Meta.loading) {
       return <div>Ищем репозитории</div>;
-    } else if (reposList.length) {
-      return reposList.map((repo: RepoItem): JSX.Element => {
-        return (
-          <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
-        );
-      });
+    } else if (store?.repos.length) {
+      return store?.repos.map(
+        (repo: GithubRepoItemModel): JSX.Element => {
+          return (
+            <RepoTile
+              repoItem={repo}
+              key={repo.id}
+              onClick={onClickRepo(repo)}
+            />
+          );
+        }
+      );
     }
     return null;
   };
 
-  useEffect(() => {
-    if (owner !== "") {
-      setPage(1);
-      loadRepos(owner, 1);
-    }
-  }, [owner]);
-
-  const nextRepos = async () => {
-    setPage(page + 1);
-    await loadRepos(inputValue, page + 1);
+  const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    store?.setInputValue(value);
   };
+
   return (
-    <div>
+    <>
       <div className={`${styles.reposList}`}>
         <div className={`${styles.reposList__search}`}>
           <Input
-            value={inputValue}
-            placeholder="Введите название организации"
+            value={store?.searchName}
+            placeholder='Введите название организации'
             onChange={searchOnChange}
           />
-          <Button onClick={searchRepo}>
-            <SearchIcon currentColor="white" />
+          <Button onClick={store?.searchRepo}>
+            <SearchIcon currentColor={'white'} />
           </Button>
         </div>
         <div className={`${styles.reposList__repos}`}>
-          {reposList.length ? (
+          {store?.repos.length ? (
             <InfiniteScroll
               hasMore={true}
               loader={<div>Загрузка</div>}
-              next={nextRepos}
-              dataLength={reposList.length}
+              next={store?.nextRepos}
+              dataLength={store?.repos.length}
             >
               {repoTiles()}
             </InfiniteScroll>
           ) : null}
+          {store?.meta === Meta.error ? (
+            <div>
+              Что-то пошло не так. Пожалуйста, перезагрузите
+              страницу
+            </div>
+          ) : null}
         </div>
       </div>
-    </div>
+      <Routes>
+        <Route
+          path='/repos/:owner/:repo'
+          element={RepoBranchesDrawer}
+        />
+      </Routes>
+    </>
   );
 };
 
-export default memo(RepoSearchPage);
+export default observer(RepoSearchPage);
