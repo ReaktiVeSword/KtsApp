@@ -58,7 +58,7 @@ const RepoSearchPage: React.FC = () => {
 
   useEffect(() => {
     if (owner !== "") {
-      setPage(1);
+      setPage(1); // todo: отслеживание в сторе
       loadRepos(owner, 1);
     }
   }, [owner]);
