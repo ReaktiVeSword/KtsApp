@@ -1,14 +1,13 @@
 import { Context, useContext, useState } from "react";
 
 import { ApiResponse } from "@shared/store/ApiStore/types";
+import GitHubStore from "@store/GitHubStore";
 import { RepoItem } from "@store/GitHubStore/types";
 
-import { GithubContextType, ReposContextType } from "./types";
+import { ReposContextType } from "./types";
 
-const useReposContext = (
-  context: Context<GithubContextType | null>
-): ReposContextType => {
-  const storeContext = useContext(context);
+const useReposContext = (): ReposContextType => {
+  const storeContext = new GitHubStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [reposList, setReposList] = useState<RepoItem[]>([]);
@@ -18,20 +17,26 @@ const useReposContext = (
     page: number,
     perPage: number = 7
   ) => {
-    storeContext?.store
-      .getOrganizationReposList({
-        organizationName: value,
-        page,
-        perPage,
-      })
-      .then((result: ApiResponse<RepoItem[], any>) => {
-        if (page === 1) {
-          setReposList(result.data);
-        } else {
-          setReposList(reposList.concat(result.data));
-        }
-        setIsLoading(false);
-      });
+    try {
+      storeContext
+        .getOrganizationReposList({
+          organizationName: value,
+          page,
+          perPage,
+        })
+        .then((result: ApiResponse<RepoItem[], any>) => {
+          setIsLoading(true);
+          if (page === 1) {
+            setReposList(result.data);
+          } else {
+            setReposList(reposList.concat(result.data));
+          }
+          setIsLoading(false);
+        });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   };
 
   return { reposList, isLoading, loadRepos };

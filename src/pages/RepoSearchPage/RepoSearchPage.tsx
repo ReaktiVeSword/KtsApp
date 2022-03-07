@@ -11,23 +11,19 @@ import { urls } from "@utils/utils";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
-import { StoreContext } from "../../App";
-import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
 import styles from "./RepoSearchPage.module.scss";
 
-const gitHubStore = new GitHubStore();
+type OwnerParams = {
+  owner: string;
+};
 
 const RepoSearchPage: React.FC = () => {
-  type OwnerParams = {
-    owner: string;
-  };
-
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const { owner } = useParams<keyof OwnerParams>() as OwnerParams;
 
-  const { isLoading, reposList, loadRepos } = useReposContext(StoreContext);
+  const { isLoading, reposList, loadRepos } = useReposContext();
 
   const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -87,7 +83,7 @@ const RepoSearchPage: React.FC = () => {
         <div className={`${styles.reposList__repos}`}>
           {reposList.length ? (
             <InfiniteScroll
-              hasMore={true}
+              hasMore={reposList.length > 0}
               loader={<div>Загрузка</div>}
               next={nextRepos}
               dataLength={reposList.length}
