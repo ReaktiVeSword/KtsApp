@@ -47,11 +47,9 @@ const RepoSearchPage: React.FC = () => {
     if (isLoading) {
       return <div>Ищем репозитории</div>;
     } else if (reposList.length) {
-      return reposList.map((repo: RepoItem): JSX.Element => {
-        return (
+      return reposList.map((repo: RepoItem): JSX.Element => (
           <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
-        );
-      });
+      );
     }
     return null;
   };
