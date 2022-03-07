@@ -35,7 +35,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
           <span className={`${styles.repoTile__iconRaiting}`}>
             <StarIcon currentColor="#FF9432" />
           </span>
-          <span className={`${styles.repoTile__raitingInfo}`}>
+          <span className={styles.repoTile__raitingInfo}>
             {stargazers_count}
           </span>
           <span className={`${styles.repoTile__dateInfo}`}>
