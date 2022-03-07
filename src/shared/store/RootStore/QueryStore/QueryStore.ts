@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import qs, { ParsedQs } from "qs";
-import { NavigateFunction } from "react-router-dom";
+import { Location, NavigateFunction } from "react-router-dom";
 
 type PrivateFields = "_history" | "_location" | "_params";
 export default class QueryStore {
