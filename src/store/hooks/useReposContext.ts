@@ -7,7 +7,7 @@ import { RepoItem } from "@store/GitHubStore/types";
 import { ReposContextType } from "./types";
 
 const useReposContext = (): ReposContextType => {
-  const storeContext = new GitHubStore();
+  const store = new GitHubStore();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [reposList, setReposList] = useState<RepoItem[]>([]);
@@ -18,7 +18,7 @@ const useReposContext = (): ReposContextType => {
     perPage: number = 7
   ) => {
     try {
-      storeContext
+      store
         .getOrganizationReposList({
           organizationName: value,
           page,
