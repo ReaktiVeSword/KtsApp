@@ -1,19 +1,21 @@
 import { useEffect } from "react";
 
-import RepoTile from "@components/RepoTile/RepoTile";
+import Button from "@components/Button";
+import Input from "@components/Input";
+import RepoTile from "@components/RepoTile/Index";
 import SearchIcon from "@components/SearchIcon";
+import { StoreContext } from "@main/App";
 import RootStore from "@shared/store/RootStore";
 import useReposContext from "@store/hooks/useReposContext";
 import { GithubRepoItemModel } from "@store/models/github/githubRepoItem";
 import { Meta } from "@utils/meta";
 import { urls } from "@utils/utils";
-import { Input, Button, Switch } from "antd";
 import { observer } from "mobx-react-lite";
 import qs from "qs";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
-import { StoreContext } from "../../App";
+import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
 import styles from "./RepoSearchPage.module.scss";
 
 const RepoSearchPage: React.FC = () => {
@@ -47,7 +49,8 @@ const RepoSearchPage: React.FC = () => {
       return store?.repos.map((repo: GithubRepoItemModel): JSX.Element => {
         return (
           <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
-      );
+        );
+      });
     }
     return null;
   };
@@ -73,7 +76,7 @@ const RepoSearchPage: React.FC = () => {
         <div className={`${styles.reposList__repos}`}>
           {store?.repos.length ? (
             <InfiniteScroll
-              hasMore={reposList.length > 0}
+              hasMore={true}
               loader={<div>Загрузка</div>}
               next={store?.nextRepos}
               dataLength={store?.repos.length}
@@ -86,6 +89,9 @@ const RepoSearchPage: React.FC = () => {
           ) : null}
         </div>
       </div>
+      <Routes>
+        <Route path="/repos/:owner/:repo" element={<RepoBranchesDrawer />} />
+      </Routes>
     </>
   );
 };

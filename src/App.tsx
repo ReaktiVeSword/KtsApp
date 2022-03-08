@@ -25,15 +25,13 @@ function App() {
         branchList,
       }}
     >
-      <BrowserRouter>
-        <Routes>
-          <Route path="/repos/*" element={<RepoSearchPage />} />
-          <Route path="/repos/:owner" element={<RepoSearchPage />} />
-          <Route path="/repos/:owner/:repo" element={<RepoBranchesDrawer />} />
-          <Route path="*" element={<Navigate to="/repos" />} />
-        </Routes>
-      </BrowserRouter>
-    </StoreContext.Provider>
+      <Routes>
+        <Route path="/repos/*" element={<RepoSearchPage />} />
+        {/* <Route path="/repos/:owner" element={<RepoSearchPage />} />
+          <Route path="/repos/:owner/:repo" element={<RepoBranchesDrawer />} /> */}
+        <Route path="*" element={<Navigate to="/repos" />} />
+      </Routes>
+    </Provider>
   );
 }
 
