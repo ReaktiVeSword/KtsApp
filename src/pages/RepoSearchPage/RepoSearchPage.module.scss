@@ -1,0 +1,22 @@
+.reposList {
+    padding: 20px;
+    width: 100%; /*397px;*/
+    box-sizing: border-box;
+
+    &__search {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        column-gap: 12px;
+        justify-items: stretch;
+        margin-bottom: 20px;
+    }
+
+    &__repos {
+        display: grid;
+        row-gap: 12px;
+        grid-template-columns: 100%;
+        justify-items: stretch;
+        max-height: 800px;
+        overflow: scroll;
+    }
+}

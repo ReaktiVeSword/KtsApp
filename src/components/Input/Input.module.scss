@@ -1,0 +1,18 @@
+@import 'src/styles/variables';
+
+.input {
+    background: $main_background;
+    border: 1px solid $primary_border;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 17px 12px;
+    color: $primary_color;
+
+    &:focus {
+        border: 1px solid $active_border;
+    }
+
+    &:disabled {
+        background: $input_disabled_background;
+    }
+}

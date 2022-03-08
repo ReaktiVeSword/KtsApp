@@ -1,77 +1,98 @@
-import React from "react";
-import { useState } from "react";
-import "./RepoSearchPage.css";
+import { memo, useEffect, useState } from "react";
 
+import Button from "@components/Button";
+import Input from "@components/Input";
 import RepoTile from "@components/RepoTile/Index";
-import Searchbar from "@components/Searchbar";
-import { ApiResponse } from "@shared/store/ApiStore/types";
+import SearchIcon from "@components/SearchIcon";
 import GitHubStore from "@store/GitHubStore";
 import { RepoItem } from "@store/GitHubStore/types";
+import useReposContext from "@store/hooks/useReposContext";
+import { urls } from "@utils/utils";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
-import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
+import styles from "./RepoSearchPage.module.scss";
 
-const gitHubStore = new GitHubStore();
+type OwnerParams = {
+  owner: string;
+};
 
 const RepoSearchPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState<string>("");
-  const [reposList, setReposList] = useState<RepoItem[]>([]);
-  const [selectedRepo, setSelectedRepo] = useState<RepoItem | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const { owner } = useParams<keyof OwnerParams>() as OwnerParams;
+
+  const { isLoading, reposList, loadRepos } = useReposContext();
 
   const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  const searchRepo = () => {
-    try {
-      if (inputValue !== "") {
-        setIsLoading(true);
-        gitHubStore
-          .getOrganizationReposList({
-            organizationName: inputValue,
-          })
-          .then((result: ApiResponse<RepoItem[], any>) => {
-            setReposList(result.data);
-            setIsLoading(false);
-          });
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+  const searchRepo = async () => {
+    if (inputValue !== "") {
+      setPage(1);
+      //await loadRepos(inputValue, 1);
+      navigate(`/repos/${inputValue}`);
     }
   };
 
-  const onClickRepo = (repo: RepoItem) => setSelectedRepo(repo);
+  const onClickRepo =
+    (repo: RepoItem): (() => void) =>
+    (): void => {
+      navigate(urls.router.openRepo(repo.owner.login, repo.name));
+    };
 
-  const onClose = () => {
-    setSelectedRepo(null);
+  const repoTiles = () => {
+    if (isLoading) {
+      return <div>Ищем репозитории</div>;
+    } else if (reposList.length) {
+      return reposList.map((repo: RepoItem): JSX.Element => (
+          <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
+      );
+    }
+    return null;
   };
 
-  const repoTiles = isLoading ? (
-    <div>Ищем репозитории</div>
-  ) : (
-    reposList.map((repo: RepoItem): JSX.Element => {
-      return (
-        <RepoTile
-          key={repo.id}
-          repoItem={repo}
-          onClick={() => onClickRepo(repo)}
-        />
-      );
-    })
-  );
+  useEffect(() => {
+    if (owner !== "") {
+      setPage(1); // todo: отслеживание в сторе
+      loadRepos(owner, 1);
+    }
+  }, [owner]);
 
+  const nextRepos = async () => {
+    setPage(page + 1);
+    await loadRepos(inputValue, page + 1);
+  };
   return (
-    <div className={"repos-list"}>
-      <Searchbar
-        inputValue={inputValue}
-        searchOnChange={searchOnChange}
-        searchRepo={searchRepo}
-      />
-      <div className={"repos-list__repos"}>{repoTiles}</div>
-      <RepoBranchesDrawer selectedRepo={selectedRepo} onClose={onClose} />
+    <div>
+      <div className={`${styles.reposList}`}>
+        <div className={`${styles.reposList__search}`}>
+          <Input
+            value={inputValue}
+            placeholder="Введите название организации"
+            onChange={searchOnChange}
+          />
+          <Button onClick={searchRepo}>
+            <SearchIcon currentColor="white" />
+          </Button>
+        </div>
+        <div className={`${styles.reposList__repos}`}>
+          {reposList.length ? (
+            <InfiniteScroll
+              hasMore={reposList.length > 0}
+              loader={<div>Загрузка</div>}
+              next={nextRepos}
+              dataLength={reposList.length}
+            >
+              {repoTiles()}
+            </InfiniteScroll>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default React.memo(RepoSearchPage);
+export default memo(RepoSearchPage);

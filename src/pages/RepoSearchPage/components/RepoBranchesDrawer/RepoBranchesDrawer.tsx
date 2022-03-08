@@ -1,59 +1,65 @@
-import React, { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
-import "./RepoBranchesDrawer.css";
 import "antd/dist/antd.css";
-import GitHubStore from "@store/GitHubStore";
+import { useStoreContext } from "@main/App";
+import { ApiResponse } from "@shared/store/ApiStore/types";
 import { Drawer } from "antd";
-import { ApiResponse } from "src/shared/store/ApiStore/types";
+import { useNavigate, useParams } from "react-router-dom";
 import { BranchItem, RepoItem } from "src/store/GitHubStore/types";
 
-export type RepoBranchesDrawerProps = {
-  selectedRepo: RepoItem | null;
-  onClose: () => void;
-};
+import styles from "./RepoBranchesDrawer.module.scss";
 
-const gitHubStore = new GitHubStore();
+const RepoBranchesDrawer: React.FC = () => {
+  const storeContext = useStoreContext();
+  const navigator = useNavigate();
 
-const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
-  selectedRepo,
-  onClose,
-}): JSX.Element => {
+  type OwnerRepoParams = {
+    owner: string;
+    repo: string;
+  };
+
+  const { owner, repo } = useParams<keyof OwnerRepoParams>() as OwnerRepoParams;
   const [branchList, setBranchList] = useState<BranchItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     try {
-      if (selectedRepo) {
-        setIsLoading(true);
-        gitHubStore
-          .getReposBranchesList({
-            ownerName: selectedRepo.owner.login,
-            repoName: selectedRepo.name,
-          })
-          .then((result: ApiResponse<BranchItem[], any>) => {
-            setBranchList(result.data);
-            setIsLoading(false);
-          });
-      }
+      setIsLoading(true);
+      storeContext?.store
+        .getReposBranchesList({
+          ownerName: owner,
+          repoName: repo,
+        })
+        .then((result: ApiResponse<BranchItem[], any>) => {
+          setBranchList(result.data);
+          setIsLoading(false);
+        });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
     }
-  }, [selectedRepo]);
+  }, [owner, repo]);
+
+  const onClose = () => {
+    navigator(-1);
+  };
 
   return (
     <Drawer
       title="Ветки репозитория"
       placement="left"
       onClose={onClose}
-      visible={selectedRepo !== null}
+      visible={true}
     >
       {isLoading ? (
         <div>Загружаем ветки</div>
       ) : (
         branchList.map(
           (branch: BranchItem): JSX.Element => (
-            <div className="repo-branches-drawer__item" key={branch.name}>
+            <div
+              className={`${styles.repoBranchesDrawer__item}`}
+              key={branch.name}
+            >
               {branch.name}
             </div>
           )
@@ -63,4 +69,4 @@ const RepoBranchesDrawer: React.FC<RepoBranchesDrawerProps> = ({
   );
 };
 
-export default React.memo(RepoBranchesDrawer);
+export default memo(RepoBranchesDrawer);
