@@ -1,5 +1,5 @@
-@import 'src/styles/variables';
-@import 'src/styles/mixin';
+@import '@styles/variables';
+@import '@styles/mixin';
 
 .avatar {
     @include square(80px, 50%);

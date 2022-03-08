@@ -33,7 +33,7 @@ function App() {
           <Route path="*" element={<Navigate to="/repos" />} />
         </Routes>
       </BrowserRouter>
-    </Provider>
+    </StoreContext.Provider>
   );
 }
 

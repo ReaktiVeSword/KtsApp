@@ -47,8 +47,7 @@ const RepoSearchPage: React.FC = () => {
       return store?.repos.map((repo: GithubRepoItemModel): JSX.Element => {
         return (
           <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
-        );
-      });
+      );
     }
     return null;
   };
@@ -74,7 +73,7 @@ const RepoSearchPage: React.FC = () => {
         <div className={`${styles.reposList__repos}`}>
           {store?.repos.length ? (
             <InfiniteScroll
-              hasMore={true}
+              hasMore={reposList.length > 0}
               loader={<div>Загрузка</div>}
               next={store?.nextRepos}
               dataLength={store?.repos.length}
