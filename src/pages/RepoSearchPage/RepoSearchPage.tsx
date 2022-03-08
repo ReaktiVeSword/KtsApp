@@ -26,7 +26,6 @@ const RepoSearchPage: React.FC = () => {
 
   useEffect(() => {
     queryParse();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const queryParse = () => {
@@ -89,9 +88,6 @@ const RepoSearchPage: React.FC = () => {
           ) : null}
         </div>
       </div>
-      <Routes>
-        <Route path="/repos/:owner/:repo" element={<RepoBranchesDrawer />} />
-      </Routes>
     </>
   );
 };

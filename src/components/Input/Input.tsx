@@ -8,11 +8,7 @@ export type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: React.FC<InputProps> = ({
-  value,
-  placeholder,
-  onChange,
-}): JSX.Element => {
+const Input: React.FC<InputProps> = ({ value, placeholder, onChange }) => {
   return (
     <input
       className={`${styles.input}`}
