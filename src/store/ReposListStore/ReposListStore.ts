@@ -41,7 +41,6 @@ export default class ReposListStore implements IGitHubStore, ILocalStore {
       _repos: observable.ref,
       _meta: observable,
       repos: computed,
-      meta: computed,
       getOrganizationReposList: action,
       nextRepos: action.bound,
       searchRepo: action.bound,
@@ -55,8 +54,12 @@ export default class ReposListStore implements IGitHubStore, ILocalStore {
     return linearizeCollection(this._repos);
   }
 
-  get meta(): Meta {
-    return this._meta;
+  isLoading(): boolean {
+    return this._meta === Meta.loading;
+  }
+
+  isError(): boolean {
+    return this._meta === Meta.error;
   }
 
   async nextRepos(): Promise<void> {

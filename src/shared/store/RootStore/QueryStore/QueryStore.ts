@@ -2,17 +2,15 @@ import { action, makeObservable, observable } from "mobx";
 import qs, { ParsedQs } from "qs";
 import { Location, NavigateFunction } from "react-router-dom";
 
-type PrivateFields = "_history" | "_location" | "_params";
+type PrivateFields = "_params";
 export default class QueryStore {
   private _params: ParsedQs = {};
-  //private _location: Location | undefined;
+  private _parsed: ParsedQs | undefined;
   private _navigate: NavigateFunction | undefined;
 
   constructor() {
     makeObservable<QueryStore, PrivateFields>(this, {
       _params: observable,
-      _history: observable,
-      _location: observable,
       setHistory: action,
       setParam: action,
     });
@@ -20,7 +18,14 @@ export default class QueryStore {
 
   setHistory(navigate: NavigateFunction, location: Location): void {
     this._navigate = navigate;
-    //this._location = location;
+  }
+
+  setLocation(search: string): void {
+    this._parsed = qs.parse(search, { ignoreQueryPrefix: true });
+  }
+
+  getParsed(): ParsedQs | undefined {
+    return this._parsed;
   }
 
   setParam(key: string, value: string): void {

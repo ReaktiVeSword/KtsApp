@@ -21,18 +21,19 @@ const RepoSearchPage: React.FC = () => {
   const store = useReposContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const parsed = qs.parse(location.search, { ignoreQueryPrefix: true });
 
   useEffect(() => {
     queryParse();
   }, []);
 
   const queryParse = useCallback(() => {
+    RootStore.query.setLocation(location.search);
+    const parsed = RootStore.query.getParsed();
     if (parsed && parsed.search) {
       RootStore.query.setParam("search", parsed?.search.toString());
       store?.setInputValue(parsed?.search.toString());
     }
-  }, [parsed?.search]);
+  }, []);
 
   const onClickRepo = useCallback(
     (repo: GithubRepoItemModel): (() => void) =>
@@ -43,7 +44,7 @@ const RepoSearchPage: React.FC = () => {
   );
 
   const repoTiles = useCallback(() => {
-    if (store?.meta === Meta.loading) {
+    if (store?.isLoading()) {
       return <div>Ищем репозитории</div>;
     }
     try {
@@ -57,7 +58,7 @@ const RepoSearchPage: React.FC = () => {
       console.error(error);
       return null;
     }
-  }, [store?.meta, store?.repos]);
+  }, [store?.repos]);
 
   const searchOnChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +92,7 @@ const RepoSearchPage: React.FC = () => {
               {repoTiles()}
             </InfiniteScroll>
           ) : null}
-          {store?.meta === Meta.error ? (
+          {store?.isError() ? (
             <div>Что-то пошло не так. Пожалуйста, перезагрузите страницу</div>
           ) : null}
         </div>
