@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import Button from "@components/Button";
 import Input from "@components/Input";
@@ -13,9 +13,8 @@ import { urls } from "@utils/utils";
 import { observer } from "mobx-react-lite";
 import qs from "qs";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import RepoBranchesDrawer from "./components/RepoBranchesDrawer";
 import styles from "./RepoSearchPage.module.scss";
 
 const RepoSearchPage: React.FC = () => {
@@ -28,36 +27,45 @@ const RepoSearchPage: React.FC = () => {
     queryParse();
   }, []);
 
-  const queryParse = () => {
+  const queryParse = useCallback(() => {
     if (parsed && parsed.search) {
       RootStore.query.setParam("search", parsed?.search.toString());
       store?.setInputValue(parsed?.search.toString());
     }
-  };
+  }, [parsed?.search]);
 
-  const onClickRepo =
+  const onClickRepo = useCallback(
     (repo: GithubRepoItemModel): (() => void) =>
-    (): void => {
-      navigate(urls.router.openRepo(repo.owner.login, repo.name));
-    };
+      (): void => {
+        navigate(urls.router.openRepo(repo.owner.login, repo.name));
+      },
+    []
+  );
 
-  const repoTiles = () => {
+  const repoTiles = useCallback(() => {
     if (store?.meta === Meta.loading) {
       return <div>Ищем репозитории</div>;
-    } else if (store?.repos.length) {
+    }
+    try {
       return store?.repos.map((repo: GithubRepoItemModel): JSX.Element => {
         return (
           <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
         );
       });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      return null;
     }
-    return null;
-  };
+  }, [store?.meta, store?.repos]);
 
-  const searchOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    store?.setInputValue(value);
-  };
+  const searchOnChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      store?.setInputValue(value);
+    },
+    []
+  );
 
   return (
     <>

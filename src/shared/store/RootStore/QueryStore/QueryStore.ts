@@ -5,8 +5,8 @@ import { Location, NavigateFunction } from "react-router-dom";
 type PrivateFields = "_history" | "_location" | "_params";
 export default class QueryStore {
   private _params: ParsedQs = {};
-  private _location: Location | undefined;
-  private _history: NavigateFunction | undefined;
+  //private _location: Location | undefined;
+  private _navigate: NavigateFunction | undefined;
 
   constructor() {
     makeObservable<QueryStore, PrivateFields>(this, {
@@ -18,9 +18,9 @@ export default class QueryStore {
     });
   }
 
-  setHistory(history: NavigateFunction, location: Location): void {
-    this._history = history;
-    this._location = location;
+  setHistory(navigate: NavigateFunction, location: Location): void {
+    this._navigate = navigate;
+    //this._location = location;
   }
 
   setParam(key: string, value: string): void {
@@ -28,7 +28,7 @@ export default class QueryStore {
     this._params = nextParams;
     const nextSearch = qs.stringify(nextParams);
 
-    this._history!(nextSearch);
+    this._navigate!(nextSearch);
   }
 
   getParam(key: string): undefined | string | string[] | ParsedQs | ParsedQs[] {

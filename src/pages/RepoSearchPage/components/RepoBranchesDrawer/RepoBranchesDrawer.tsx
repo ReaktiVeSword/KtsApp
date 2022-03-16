@@ -44,16 +44,14 @@ const RepoBranchesDrawer: React.FC = () => {
       ) : store?.meta === Meta.error ? (
         <div>Что-то пошло не так. Пожалуйста, перезагрузите страницу</div>
       ) : (
-        store?.branches?.map(
-          (branch: BranchItem): JSX.Element => (
-            <div
-              className={`${styles.repoBranchesDrawer__item}`}
-              key={branch.name}
-            >
-              {branch.name}
-            </div>
-          )
-        )
+        store?.branches?.map((branch: BranchItem) => (
+          <div
+            className={`${styles.repoBranchesDrawer__item}`}
+            key={branch.name}
+          >
+            {branch.name}
+          </div>
+        ))
       )}
     </Drawer>
   );
