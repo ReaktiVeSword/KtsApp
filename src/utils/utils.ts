@@ -1,6 +1,10 @@
-export const dateFormat = (date: string) => {
+export const dateFormatFromString = (date: string) => {
   const dateF: Date = new Date(date);
   return dateF.toDateString();
+};
+
+export const dateFormatFromDate = (date: Date) => {
+  return date.toDateString();
 };
 
 export const urls = {

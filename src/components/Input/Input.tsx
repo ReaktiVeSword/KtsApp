@@ -3,16 +3,12 @@ import React from "react";
 import styles from "./Input.module.scss";
 
 export type InputProps = {
-  value: string;
+  value?: string;
   placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: React.FC<InputProps> = ({
-  value,
-  placeholder,
-  onChange,
-}): JSX.Element => {
+const Input: React.FC<InputProps> = ({ value, placeholder, onChange }) => {
   return (
     <input
       className={`${styles.input}`}

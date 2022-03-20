@@ -1,44 +1,32 @@
-import { memo, useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import "antd/dist/antd.css";
-import { useStoreContext } from "@main/App";
-import { ApiResponse } from "@shared/store/ApiStore/types";
+import useBranchesContext from "@shared/hooks/useBranchesContext";
+import { BranchItem } from "@store/models/types";
+import { Meta } from "@utils/meta";
 import { Drawer } from "antd";
+import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
-import { BranchItem, RepoItem } from "src/store/GitHubStore/types";
 
+import { StoreContext } from "../../../../App";
 import styles from "./RepoBranchesDrawer.module.scss";
 
-const RepoBranchesDrawer: React.FC = () => {
-  const storeContext = useStoreContext();
-  const navigator = useNavigate();
+type OwnerRepoParams = {
+  owner: string;
+  repo: string;
+};
 
-  type OwnerRepoParams = {
-    owner: string;
-    repo: string;
-  };
+const RepoBranchesDrawer: React.FC = () => {
+  const navigator = useNavigate();
+  const store = useBranchesContext(StoreContext);
 
   const { owner, repo } = useParams<keyof OwnerRepoParams>() as OwnerRepoParams;
-  const [branchList, setBranchList] = useState<BranchItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    try {
-      setIsLoading(true);
-      storeContext?.store
-        .getReposBranchesList({
-          ownerName: owner,
-          repoName: repo,
-        })
-        .then((result: ApiResponse<BranchItem[], any>) => {
-          setBranchList(result.data);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  }, [owner, repo]);
+    store?.getReposBranchesList({
+      ownerName: owner,
+      repoName: repo,
+    });
+  }, [store, owner, repo]);
 
   const onClose = () => {
     navigator(-1);
@@ -51,22 +39,22 @@ const RepoBranchesDrawer: React.FC = () => {
       onClose={onClose}
       visible={true}
     >
-      {isLoading ? (
+      {store?.meta === Meta.loading ? (
         <div>Загружаем ветки</div>
+      ) : store?.meta === Meta.error ? (
+        <div>Что-то пошло не так. Пожалуйста, перезагрузите страницу</div>
       ) : (
-        branchList.map(
-          (branch: BranchItem): JSX.Element => (
-            <div
-              className={`${styles.repoBranchesDrawer__item}`}
-              key={branch.name}
-            >
-              {branch.name}
-            </div>
-          )
-        )
+        store?.branches?.map((branch: BranchItem) => (
+          <div
+            className={`${styles.repoBranchesDrawer__item}`}
+            key={branch.name}
+          >
+            {branch.name}
+          </div>
+        ))
       )}
     </Drawer>
   );
 };
 
-export default memo(RepoBranchesDrawer);
+export default observer(RepoBranchesDrawer);
