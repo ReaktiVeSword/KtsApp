@@ -20,7 +20,7 @@ const RepoTile: React.FC<RepoTileProps> = ({
     updatedAt,
   },
   onClick,
-}): JSX.Element => {
+}) => {
   return (
     <div className={`${styles.repoTile}`} onClick={onClick}>
       <div className={`${styles.repoTile__avatar}`}>

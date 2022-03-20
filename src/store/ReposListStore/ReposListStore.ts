@@ -73,6 +73,7 @@ export default class ReposListStore implements IGitHubStore, ILocalStore {
   }
 
   async searchRepo(): Promise<void> {
+    RootStore.query.setParam("search", this.searchName);
     runInAction(() => {
       this._repos = getInitialCollectionModel();
       this._meta = Meta.loading;
@@ -86,7 +87,6 @@ export default class ReposListStore implements IGitHubStore, ILocalStore {
 
   setInputValue(value: string): void {
     this.searchName = value;
-    RootStore.query.setParam("search", this.searchName);
   }
 
   async getOrganizationReposList(

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Button from "@components/Button";
 import Input from "@components/Input";
@@ -13,16 +13,28 @@ import { urls } from "@utils/utils";
 import { observer } from "mobx-react-lite";
 import qs from "qs";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import styles from "./RepoSearchPage.module.scss";
+
+type OwnerParams = {
+  owner: string;
+};
 
 const RepoSearchPage: React.FC = () => {
   const store = useReposContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { owner } = useParams<keyof OwnerParams>() as OwnerParams;
+
   useEffect(() => {
+    if (owner) {
+      navigate(`/repos/${owner}`);
+      store?.setInputValue(owner);
+      store?.searchRepo();
+    }
+
     queryParse();
   }, []);
 
@@ -48,7 +60,7 @@ const RepoSearchPage: React.FC = () => {
       return <div>Ищем репозитории</div>;
     }
     try {
-      return store?.repos.map((repo: GithubRepoItemModel): JSX.Element => {
+      return store?.repos.map((repo: GithubRepoItemModel) => {
         return (
           <RepoTile repoItem={repo} key={repo.id} onClick={onClickRepo(repo)} />
         );
